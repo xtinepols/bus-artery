@@ -3777,7 +3777,7 @@ prompt@0.2.14:
     utile "0.2.x"
     winston "0.8.x"
 
-property-path@^0.0.5:
+property-path@0.0.5, property-path@^0.0.5:
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/property-path/-/property-path-0.0.5.tgz#22a3c7a829c93fbbde9857dc3f6903b939454056"
   dependencies:
@@ -4338,6 +4338,13 @@ sails-stringfile@0.3.2:
   dependencies:
     colors "*"
     lodash "~2.4.1"
+
+"sails-swagger@https://github.com/kbaylosis/json-policy.git":
+  version "0.0.4"
+  resolved "https://github.com/kbaylosis/json-policy.git#32c7480a586ef6200c719211c3e843224562c6cc"
+  dependencies:
+    lodash "^4.0.1"
+    property-path "0.0.5"
 
 sails.io.js-dist@^1.0.0:
   version "1.1.12"
