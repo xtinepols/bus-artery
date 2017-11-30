@@ -44,6 +44,22 @@ const Driver = {
 			type: "boolean",
 			defaultsTo: false,
 		},
+
+		longitude: {
+			type: "string",
+		},
+
+		latitude: {
+			type: "string",
+		},
+
+		origin: {
+			type: "string",
+		},
+
+		estimatedTime: {
+			type: "string",
+		},
 	},
 
 	sanitize: (driver) => {
