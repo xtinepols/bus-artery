@@ -68,6 +68,37 @@ const driverLogin = async (req) =>
 		}
 	});
 
+const passengerLogin = async (req) =>
+	new Promise(async (resolve, reject) => {
+		try {
+			let { username, password } = req.body;
+
+			username = username.trim();
+			password = password.trim();
+
+			const passenger = await Passenger.findOne({ username });
+
+			if (!passenger) {
+				throw new Error("Passenger account not found.");
+			}
+
+			const isMatch = await Session.verifyPassword(password, passenger.password);
+			
+			if (!isMatch) {
+				throw new Error("Invalid password.");
+			}
+
+			const sessionPayload = await generateSession(req, passenger.id, "passengerId");
+
+			resolve(sessionPayload);
+		} catch (err) {
+			sails.log.error("passengerLogin::error");
+			sails.log.error(err);
+
+			return reject(err);
+		}
+	});
+
 const generateSession = async (req, id, key) => {
 	try {
 		const metadata = req.headers;
@@ -89,8 +120,17 @@ const generateSession = async (req, id, key) => {
 				.meta({ fetch: true });
 		}
 
-		session[key] =
-			(key === "ownerId") ? await Owner.findOne({ id }) : await Driver.findOne({ id });
+		switch (req.body.type) {
+		case "owner":
+			session[key] = await Owner.findOne({ id });
+			break;
+		case "driver":
+			session[key] = await Driver.findOne({ id });
+			break;
+		case "passenger":
+			session[key] = await Passenger.findOne({ id });
+			break;
+		}
 
 		return session;
 	} catch (err) {
@@ -112,6 +152,9 @@ const SessionController = {
 				break;
 			case "driver":
 				session = await driverLogin(req);
+				break;
+			case "passenger":
+				session = await passengerLogin(req);
 				break;
 			default:
 				throw new Error("Unknown identifier. Owner and Driver only.");

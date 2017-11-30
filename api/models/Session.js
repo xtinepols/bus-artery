@@ -18,12 +18,17 @@ const Session = {
 	attributes: {
 		ownerId: {
 			model: "owner",
-			description: "login either via owner or driver",
+			description: "login either via owner, driver, or passenger",
 		},
 
 		driverId: {
 			model: "driver",
-			description: "login either via owner or driver",
+			description: "login either via owner, driver, or passenger",
+		},
+
+		passengerId: {
+			model: "passenger",
+			description: "login either via owner, driver, or passenger",
 		},
 
 		refreshToken: {
