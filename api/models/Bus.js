@@ -8,7 +8,7 @@
 const Bus = {
 	attributes: {
 		companyName: {
-			type: string,
+			type: "string",
 		},
 
 		busNumber: {
@@ -24,8 +24,7 @@ const Bus = {
 		},
 
 		location: {
-			type: "json",
-			defaultsTo: {},
+			type: "string",
 		},
 
 		capacity: {
@@ -34,8 +33,7 @@ const Bus = {
 		},
 
 		route: {
-			type: "json",
-			defaultsTo: {},
+			type: "string",
 		},
 	},
 };
