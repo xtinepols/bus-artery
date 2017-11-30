@@ -29,8 +29,23 @@ const PassengerController = {
 				}
 			}
 
-			let passenger = await Passenger.create(body).meta({ fetch: true });
+			if (body.busNumber) {
+				const bus = await Bus.findOne({ busNumber: body.busNumber });
 
+				if (bus) {
+					body.busNumber = bus.id;
+				} else {
+					delete body.busNumber;
+				}
+			}
+
+			let passenger = await Passenger.findOne({ username: body.username });
+			
+			if (passenger) {
+				throw new Error("This passenger is already registered.");
+			}
+
+			passenger = await Passenger.create(body).meta({ fetch: true });
 			passenger = Passenger.sanitize(passenger);
 
 			sails.log.debug("PassengerController::create::done");
