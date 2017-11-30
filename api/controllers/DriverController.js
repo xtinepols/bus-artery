@@ -29,8 +29,23 @@ const DriverController = {
 				}
 			}
 
-			let driver = await Driver.create(body).meta({ fetch: true });
+			if (body.busNumber) {
+				const bus = await Bus.findOne({ busNumber: body.busNumber });
 
+				if (bus) {
+					body.busNumber = bus.id;
+				} else {
+					delete body.busNumber;
+				}
+			}
+
+			let driver = await Driver.findOne({ username: body.username });
+			
+			if (driver) {
+				throw new Error("This driver is already registered.");
+			}
+
+			driver = await Driver.create(body).meta({ fetch: true });
 			driver = Driver.sanitize(driver);
 
 			sails.log.debug("DriverController::create::done");
